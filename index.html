@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NexusChat Login</title>
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      GoogleAuthProvider, 
+      signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyB15E90Rxo66A8XRyTSAAsoLYtO8GAy2HM",
+      authDomain: "nexuschat-ae8d3.firebaseapp.com",
+      projectId: "nexuschat-ae8d3",
+      storageBucket: "nexuschat-ae8d3.firebasestorage.app",
+      messagingSenderId: "931647412033",
+      appId: "1:931647412033:web:d1a2231f290997c544f3c0"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Email sign-up
+    window.signUpWithEmail = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        alert("User registered: " + userCredential.user.email);
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    };
+
+    // Email login
+    window.loginWithEmail = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert("Signed in: " + userCredential.user.email);
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    };
+
+    // Google login
+    window.loginWithGoogle = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        alert("Google user: " + result.user.email);
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    };
+  </script>
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 50px;">
+  <h2>Welcome to NexusChat</h2>
+  <input id="email" type="email" placeholder="Email" /><br><br>
+  <input id="password" type="password" placeholder="Password" /><br><br>
+  <button onclick="loginWithEmail()">Login with Email</button>
+  <button onclick="signUpWithEmail()">Sign Up</button><br><br>
+  <button onclick="loginWithGoogle()">Sign in with Google</button>
+</body>
+</html>
